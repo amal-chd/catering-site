@@ -62,12 +62,15 @@ export function SiteFooter() {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="en"><body><a className="skip-link" href="#main-content">Skip to content</a><SiteHeader /><main id="main-content">{children}</main><SiteFooter />
-    <Script id="google-analytics-setup" strategy="beforeInteractive">
+    <Script id="google-analytics" strategy="afterInteractive">
       {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-CG47TTK70T');`}
+window.gtag = function(){window.dataLayer.push(arguments);};
+window.gtag('js', new Date());
+window.gtag('config', 'G-CG47TTK70T');
+var googleTagScript = document.createElement('script');
+googleTagScript.async = true;
+googleTagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-CG47TTK70T';
+document.head.appendChild(googleTagScript);`}
     </Script>
-    <Script src="https://www.googletagmanager.com/gtag/js?id=G-CG47TTK70T" strategy="afterInteractive" />
   </body></html>;
 }
