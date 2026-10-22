@@ -74,6 +74,13 @@ export function SiteFooter() {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="en"><body><a className="skip-link" href="#main-content">Skip to content</a><SiteHeader /><main id="main-content">{children}</main><SiteFooter />
+    <Script
+      id="usercentrics-cmp"
+      src="https://app.usercentrics.eu/browser-ui/latest/loader.js"
+      data-settings-id="Ur-faH6OBUly-h"
+      strategy="beforeInteractive"
+      async
+    />
     <Script id="google-analytics" strategy="afterInteractive">
       {`window.dataLayer = window.dataLayer || [];
 window.gtag = function(){window.dataLayer.push(arguments);};
