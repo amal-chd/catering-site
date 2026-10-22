@@ -865,7 +865,7 @@ h1, h2, h3 { text-wrap: balance; }
   .hero-actions .button { min-height: 53px; font-size: 12px; }
   .hero-points { gap: 8px; margin-top: 20px; font-size: 10px; }
   .hero-points span { padding: 7px 10px; }
-  .hero-image-chip { right: 18px; bottom: 19px; left: 18px; width: fit-content; max-width: calc(100% - 36px); font-size: 9px; }
+  .hero-image-chip { display: none; }
   .occasion-inner { justify-content: center; gap: 8px; padding: 20px 0; }
   .occasion-label { width: 100%; margin: 0 0 3px; text-align: center; }
   .occasion-pill { padding: 8px 11px; font-size: 9px; }
