@@ -25,4 +25,4 @@ The app renders without Supabase values, but enquiry submissions and admin pages
 
 Confirm currency, service coverage, menu content, quote and booking terms, privacy wording, production domain ownership, and staff roles. Complete the privacy page and set PRIVACY_NOTICE_VERSION only after the owner approves the final notice. Configure Turnstile, transactional email, backups, retention, and provider limits. The original generated images are editorial illustrations of catering settings; they do not represent documented past events or a verified portfolio.
 
-This project has not been connected to a live Supabase project or email account. Do not publish until the owner supplies and confirms these values.
+The public site can be deployed independently. Enquiry storage and staff workflows need the Supabase values and migrations above; spam protection needs both Turnstile keys; email notifications need the Resend settings. Configure and verify those services, along with the owner-approved privacy notice, before accepting live enquiries.

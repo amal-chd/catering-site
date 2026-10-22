@@ -87,9 +87,3 @@ export default function EnquiryForm({ selectedService = "" }: Props) {
     </>
   );
 }
-
-declare global {
-  interface Window {
-    turnstile?: { reset: () => void };
-  }
-}

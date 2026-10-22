@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website", locale: "en_IN", siteName: "Raman Caterings",
     title: "Raman Caterings | Kakkanad, Kerala", description: "Tell us about your gathering and request a custom catering quotation.",
-    images: [{ url: "/images/raman-caterings-hero.jpg", width: 1680, height: 945, alt: "A Kerala feast arranged for a gathering" }]
+    images: [{ url: "/images/raman-caterings-hero.jpg", width: 1672, height: 941, alt: "A Kerala feast arranged for a gathering" }]
   },
   twitter: { card: "summary_large_image", images: ["/images/raman-caterings-hero.jpg"] }
 };
