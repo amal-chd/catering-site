@@ -1,0 +1,28 @@
+# Catering Website MVP
+
+A mobile-first Next.js website for catering enquiries and staff-created custom quotations. Kakkanad, Kerala is the supplied location anchor. The interface intentionally contains no business name, phone number, menu, prices, testimonials, service-radius promises, or legal claims.
+
+## Included
+
+- Public home, service overview, five service detail pages, process, contact, and quotation enquiry pages.
+- Server-validated enquiry API with idempotency, honeypot, database-backed rate limiting, and production Turnstile verification.
+- Supabase Auth staff sign-in and RLS-protected admin inbox.
+- Staff status updates and custom quote creation with server-calculated line totals.
+- Opaque quote links and customer response capture.
+- Supabase migration and environment template.
+
+## Start
+
+1. Install Node.js compatible with Next.js 16.
+2. Copy .env.example to .env.local and fill in the Supabase URL, publishable key, and server-only secret key.
+3. Apply supabase/migrations/0001_initial.sql to the Supabase project.
+4. Create the initial staff account in Supabase Auth, then insert its user UUID and role in public.admin_profiles.
+5. Install dependencies with npm install and start with npm run dev.
+
+The app renders without Supabase values, but enquiry submissions and admin pages require a configured project. Production enquiry submissions require both Turnstile keys. Email requires a verified sender domain and Resend settings. Without email, staff can copy a generated quote link and send it through an owner-approved channel.
+
+## Before launch
+
+Replace the generic wordmark with the approved brand identity. Confirm currency, service coverage, menu content, quote and booking terms, privacy wording, production domain, and staff roles. Complete the privacy page and set PRIVACY_NOTICE_VERSION only after the owner approves the final notice. Configure Turnstile, transactional email, backups, retention, and provider limits. Add real imagery only when supplied or licensed and approved for publication.
+
+This project has not been connected to a live Supabase project or email account. Do not publish until the owner supplies and confirms these values.
