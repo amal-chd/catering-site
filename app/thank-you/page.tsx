@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BrandMark from "@/components/BrandMark";
 
 export const metadata: Metadata = {
   title: "Enquiry received",
@@ -16,7 +17,8 @@ export default async function ThankYouPage({ searchParams }: Props) {
   return (
     <section className="thank-you-section">
       <div className="thank-you-card">
-        <span className="thank-you-mark" aria-hidden="true">✓</span>
+        <BrandMark className="brand-symbol thank-you-brand" />
+        <span className="success-kicker"><i aria-hidden="true">✓</i> ENQUIRY RECEIVED</span>
         <span className="eyebrow">RAMAN CATERINGS · KAKKANAD</span>
         <h1>Thank you for getting in touch.</h1>
         <p>Your enquiry has been received. The team will review the details and follow up using your preferred contact method.</p>
