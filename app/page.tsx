@@ -26,7 +26,8 @@ export default function HomePage() {
   return (
     <>
       <section className="hero hero-home">
-        <div className="hero-sunwash" aria-hidden="true" />
+        <Image className="hero-background" src="/images/raman-feast-illustration.jpg" alt="" fill priority sizes="100vw" />
+        <div className="hero-overlay" aria-hidden="true" />
         <div className="container hero-grid">
           <div className="hero-copy">
             <span className="eyebrow"><i className="eyebrow-dot" /> Catering for gatherings in Kakkanad</span>
@@ -38,13 +39,8 @@ export default function HomePage() {
             </div>
             <div className="hero-points"><span><i aria-hidden="true">✳</i> Custom quotations</span><span><i aria-hidden="true">✳</i> Enquiries reviewed by the team</span></div>
           </div>
-          <figure className="hero-visual">
-            <Image className="hero-photo" src="/images/raman-feast-illustration.jpg" alt="Illustration of a Kerala feast arranged on banana leaves beside brass serving vessels" fill priority sizes="(max-width: 700px) 100vw, 50vw" />
-            <span className="hero-image-chip"><span className="chip-dot" /> A table for your gathering</span>
-            <figcaption className="art-caption">Raman Caterings <span>· Kakkanad, Kerala</span></figcaption>
-          </figure>
+          <div className="hero-image-chip"><span className="chip-dot" /> Thoughtful catering · Kakkanad, Kerala</div>
         </div>
-        <span className="hero-flower flower-one" aria-hidden="true">✳</span><span className="hero-flower flower-two" aria-hidden="true">✳</span>
       </section>
 
       <section className="occasion-strip" aria-label="Catering occasions">
