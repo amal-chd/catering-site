@@ -174,13 +174,13 @@ export async function POST(request: NextRequest) {
     messages.push(sendTransactionalEmail({
       to: input.email,
       subject: "We received your catering enquiry",
-      text: "Thank you for contacting the catering team. Your reference is " + insertResult.data.public_reference + ". The team will review the details and follow up. This message is not a booking confirmation."
+      text: "Thank you for contacting Raman Caterings. Your reference is " + insertResult.data.public_reference + ". The team will review the details and follow up. This message is not a booking confirmation."
     }));
   }
   if (process.env.STAFF_ALERT_EMAIL) {
     messages.push(sendTransactionalEmail({
       to: process.env.STAFF_ALERT_EMAIL,
-      subject: "New catering enquiry " + insertResult.data.public_reference,
+      subject: "New Raman Caterings enquiry " + insertResult.data.public_reference,
       text: "New enquiry " + insertResult.data.public_reference + " · " + chosen + (input.eventDate ? " · Event date: " + input.eventDate : "") + "\nReview it in the staff dashboard: " + siteUrl + "/admin"
     }));
   }

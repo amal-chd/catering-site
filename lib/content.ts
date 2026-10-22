@@ -15,4 +15,4 @@ export const services: Service[] = [
   { slug: "bulk-food-orders", title: "Bulk food orders", short: "Start with quantity, date, and delivery or collection details.", description: "Use the enquiry form to describe the requested quantity, date, destination, and any preferences. The team will confirm what can be quoted.", prompt: "Share quantity, date, locality, and delivery or collection preference.", number: "05" }
 ];
 
-export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://raman.vercel.app";

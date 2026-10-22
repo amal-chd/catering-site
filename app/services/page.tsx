@@ -12,7 +12,7 @@ export default function ServicesPage() {
     <>
       <section className="page-hero"><div className="container">
         <div className="breadcrumb"><Link href="/">Home</Link><span>/</span><span>Services</span></div>
-        <span className="eyebrow">CATERING SERVICES · KAKKANAD</span>
+        <span className="eyebrow">RAMAN CATERINGS · KAKKANAD</span>
         <h1>Different occasions.<br />One thoughtful conversation.</h1>
         <p>Choose the type of event or order you are planning. Share the date, location, and a guest or quantity estimate to start a custom quotation.</p>
       </div></section>

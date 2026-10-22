@@ -1,14 +1,15 @@
 "use client";
 
 import Script from "next/script";
+import { useRouter } from "next/navigation";
 import { useRef, useState, type FormEvent } from "react";
 
 type Props = { selectedService?: string };
 
 export default function EnquiryForm({ selectedService = "" }: Props) {
+  const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [reference, setReference] = useState("");
   const submissionKey = useRef("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -32,10 +33,8 @@ export default function EnquiryForm({ selectedService = "" }: Props) {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "We could not submit your enquiry. Please try again.");
-      setReference(result.reference);
-      form.reset();
-      submissionKey.current = "";
-      if (window.turnstile) window.turnstile.reset();
+      const reference = typeof result.reference === "string" ? result.reference : "";
+      router.replace(reference ? `/thank-you?reference=${encodeURIComponent(reference)}` : "/thank-you");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "We could not submit your enquiry. Please try again.");
     } finally {
@@ -46,12 +45,6 @@ export default function EnquiryForm({ selectedService = "" }: Props) {
   return (
     <>
       {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ? <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer /> : null}
-      {reference ? (
-        <div className="form-success" role="status">
-          <strong>Thank you — your enquiry has been received.</strong>
-          Reference: {reference}. The team will review the details and follow up using your preferred contact method. This is not a booking confirmation.
-        </div>
-      ) : (
         <form className="form-card" onSubmit={submit}>
           <h2>Event details</h2>
           <p>Required fields are marked. Approximate details are welcome.</p>
@@ -91,7 +84,6 @@ export default function EnquiryForm({ selectedService = "" }: Props) {
           <button className="button button-dark form-submit" type="submit" disabled={busy}>{busy ? "Sending…" : "Send enquiry"} <span aria-hidden="true">↗</span></button>
           <p className="form-footnote">A quotation is prepared by the team. Submitting this form does not confirm a booking.</p>
         </form>
-      )}
     </>
   );
 }

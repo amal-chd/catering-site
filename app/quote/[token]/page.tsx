@@ -40,7 +40,7 @@ export default async function PublicQuotePage({ params }: Props) {
     {quote.customer_note ? <div className="notice" style={{ whiteSpace: "pre-wrap", marginTop: 22 }}>{quote.customer_note}</div> : null}
     <p style={{ marginTop: 24, fontSize: 12 }}>Please respond below if you would like to accept this quotation, request a revision, or decline. Availability and booking details are confirmed by the team separately. This link is available until {new Date(quote.token_expires_at).toLocaleDateString("en-IN")}.</p>
     {canRespond ? <QuoteResponse token={token} /> : <div className="notice">This quotation has already received a response or is no longer open. Please contact the team through your existing conversation.</div>}
-    <p className="form-footnote"><Link href="/">Catering in Kakkanad, Kerala</Link></p>
+    <p className="form-footnote"><Link href="/">Raman Caterings · Kakkanad, Kerala</Link></p>
   </article></section>;
 }
 

@@ -25,7 +25,7 @@ export default async function ServicePage({ params }: Props) {
     <>
       <section className="page-hero"><div className="container">
         <div className="breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><span>{service.title}</span></div>
-        <span className="eyebrow">{service.number} · CATERING IN KAKKANAD</span>
+        <span className="eyebrow">{service.number} · RAMAN CATERINGS · KAKKANAD</span>
         <h1>{service.title}</h1><p>{service.short}</p>
       </div></section>
       <section className="service-detail"><div className="container detail-layout">

@@ -1,5 +1,14 @@
 import Link from "next/link";
+import Image from "next/image";
 import { services } from "@/lib/content";
+
+const serviceImages: Record<string, { src: string; alt: string }> = {
+  "weddings-traditional-events": { src: "/images/traditional-events.jpg", alt: "Kerala event table set with banana leaves and brass serving vessels" },
+  "corporate-catering": { src: "/images/corporate-catering.jpg", alt: "A catered buffet arranged in a bright meeting venue" },
+  parties: { src: "/images/traditional-events.jpg", alt: "A welcoming dining table prepared for a gathering" },
+  "institutional-catering": { src: "/images/corporate-catering.jpg", alt: "A generous buffet prepared for group dining" },
+  "bulk-food-orders": { src: "/images/raman-caterings-hero.jpg", alt: "A Kerala meal presented on a fresh banana leaf" }
+};
 
 const steps = [
   { n: "01", title: "Tell us what you’re planning", body: "Share the occasion, date, location, and a guest estimate. You can leave details undecided." },
@@ -14,21 +23,17 @@ export default function HomePage() {
         <div className="hero-ornament" aria-hidden="true" />
         <div className="container hero-grid">
           <div className="hero-copy">
-            <span className="eyebrow">CATERING IN KAKKANAD · KERALA</span>
-            <h1>Good food brings a gathering <em>together.</em></h1>
-            <p>Planning a wedding, a business event, a celebration, or a bulk order? Share what you have in mind and request a custom quotation.</p>
+            <span className="eyebrow">RAMAN CATERINGS · KAKKANAD, KERALA</span>
+            <h1>Thoughtful food for the moments that bring us <em>together.</em></h1>
+            <p>From weddings and traditional events to business gatherings, parties, institutional catering, and bulk orders, tell Raman Caterings what you are planning and request a custom quotation.</p>
             <div className="hero-actions">
               <Link className="button button-dark" href="/request-quote">Tell us about your event <span aria-hidden="true">↗</span></Link>
               <Link className="hero-link" href="/services">Explore catering services</Link>
             </div>
           </div>
-          <div className="hero-visual" role="img" aria-label="Stylized illustration of a shared meal">
-            <div className="plate-art">
-              <span className="art-leaf leaf-a" /><span className="art-leaf leaf-b" />
-              <span className="art-leaf leaf-c" /><span className="art-leaf leaf-d" />
-              <span className="plate-center" />
-            </div>
-            <span className="art-caption">made for sharing</span>
+          <div className="hero-visual">
+            <Image className="hero-photo" src="/images/raman-caterings-hero.jpg" alt="A Kerala feast arranged with banana leaves and brass serving vessels" fill priority sizes="(max-width: 640px) 100vw, 48vw" />
+            <span className="art-caption">A gathering begins at the table</span>
           </div>
         </div>
       </section>
@@ -51,6 +56,7 @@ export default function HomePage() {
           <div className="service-grid">
             {services.map((service) => (
               <Link className="service-card" href={"/services/" + service.slug} key={service.slug}>
+                <span className="service-card-image"><Image src={serviceImages[service.slug].src} alt={serviceImages[service.slug].alt} fill sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" /></span>
                 <span className="service-number">{service.number}<span className="service-arrow" aria-hidden="true">↗</span></span>
                 <h3>{service.title}</h3><p>{service.short}</p>
               </Link>

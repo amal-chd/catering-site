@@ -22,3 +22,32 @@
 .skip-link{position:fixed;z-index:100;top:12px;left:12px;transform:translateY(-180%);padding:12px 16px;background:var(--paper);color:var(--forest);border:2px solid var(--forest);font-weight:700}
 .skip-link:focus{transform:translateY(0)}
 :focus-visible{outline:3px solid #a67543;outline-offset:3px}
+.hero-grid{min-height:640px;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,78px)}
+.hero-visual{display:block;min-height:0;height:min(47vw,520px);max-height:520px;overflow:hidden;border:1px solid rgba(255,255,255,.18);border-radius:180px 24px 24px 24px;box-shadow:0 28px 72px rgba(0,0,0,.22)}
+.hero-photo{z-index:0;object-fit:cover;object-position:center 58%}
+.hero-visual:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(0deg,rgba(20,37,29,.64),transparent);pointer-events:none}
+.art-caption{right:22px;bottom:20px;transform:none;border-radius:2px;font-size:15px}
+.service-grid{align-items:stretch}
+.service-card{min-height:0;padding:0;overflow:hidden;border-radius:12px;background:#fffefa;text-decoration:none}
+.service-card-image{position:relative;display:block;width:100%;aspect-ratio:1.67;overflow:hidden;background:#dce5d9}
+.service-card-image img{object-fit:cover;transition:transform .45s ease}
+.service-card:hover .service-card-image img{transform:scale(1.035)}
+.service-number{display:flex;justify-content:space-between;align-items:center;padding:19px 21px 0;color:var(--gold);font-size:10px;letter-spacing:.12em}
+.service-arrow{color:var(--forest);font-size:18px}
+.service-card h3{max-width:none;margin:8px 21px 8px;font-size:21px}
+.service-card p{max-width:none;margin:0;padding:0 21px 23px;color:var(--muted);font-size:12px;line-height:1.7}
+.thank-you-section{min-height:68vh;display:grid;place-items:center;padding:72px 20px;background:var(--cream)}
+.thank-you-card{width:min(640px,100%);padding:clamp(28px,6vw,62px);background:var(--paper);border:1px solid var(--line);box-shadow:0 24px 65px rgba(28,47,36,.07);text-align:center}
+.thank-you-mark{width:54px;height:54px;display:grid;place-items:center;margin:0 auto 25px;border-radius:50%;background:var(--sage);color:var(--forest);font-size:25px}
+.thank-you-card .eyebrow{color:var(--gold)}
+.thank-you-card h1{margin:17px auto;font-size:clamp(38px,6vw,56px);line-height:1.08}
+.thank-you-card>p{max-width:470px;margin:0 auto 17px;color:var(--muted);font-size:14px;line-height:1.8}
+.thank-you-reference{padding:13px;background:#f1f3eb;color:var(--forest)!important;font-size:12px!important}
+.thank-you-reference strong{margin-left:5px;letter-spacing:.06em}
+.thank-you-card .thank-you-note{font-size:12px}
+.thank-you-actions{display:flex;justify-content:center;align-items:center;gap:22px;flex-wrap:wrap;margin-top:29px}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr 1fr;gap:22px;min-height:570px}.hero-visual{height:430px}.service-card h3{font-size:19px}}
+@media(max-width:640px){.hero-grid{display:flex;min-height:0;gap:6px;padding:64px 0 40px}.hero-visual{width:100%;height:300px;max-height:none;margin-top:15px;border-radius:112px 18px 18px 18px}.art-caption{right:14px;bottom:14px;font-size:13px}.service-card-image{aspect-ratio:1.85}.service-card h3{margin-top:8px;font-size:21px}.thank-you-section{min-height:68vh;padding:48px 18px}.thank-you-actions{gap:18px}}
+@media(prefers-reduced-motion:reduce){.service-card-image img{transition:none}}
+.brand-mark:before{display:none}
+.brand-mark>svg{width:19px;height:19px;fill:var(--gold)}
