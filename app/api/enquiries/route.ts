@@ -49,6 +49,32 @@ function responseError(message: string, status: number) {
   return NextResponse.json({ error: message }, { status });
 }
 
+class PayloadTooLargeError extends Error {}
+
+async function readJsonBody(request: Request, maxBytes: number): Promise<unknown> {
+  if (!request.body) throw new Error("Request body is empty.");
+  const reader = request.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let byteLength = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    byteLength += value.byteLength;
+    if (byteLength > maxBytes) {
+      await reader.cancel().catch(() => undefined);
+      throw new PayloadTooLargeError();
+    }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(byteLength);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
 async function verifyTurnstile(token: string, remoteIp: string) {
   const secret = process.env.TURNSTILE_SECRET_KEY;
   if (!secret) return process.env.NODE_ENV !== "production";
@@ -66,11 +92,15 @@ async function verifyTurnstile(token: string, remoteIp: string) {
 }
 
 export async function POST(request: NextRequest) {
-  if (Number(request.headers.get("content-length") || "0") > 20000) return responseError("The submitted form is too large.", 413);
-
   let raw: unknown;
-  try { raw = await request.json(); }
-  catch { return responseError("Please submit the form again.", 400); }
+  try {
+    const contentLength = Number(request.headers.get("content-length") || "0");
+    if (Number.isFinite(contentLength) && contentLength > 20000) return responseError("The submitted form is too large.", 413);
+    raw = await readJsonBody(request, 20000);
+  } catch (error) {
+    if (error instanceof PayloadTooLargeError) return responseError("The submitted form is too large.", 413);
+    return responseError("Please submit the form again.", 400);
+  }
   const parsed = enquirySchema.safeParse(raw);
   if (!parsed.success) {
     const firstIssue = parsed.error.issues[0]?.message || "Check the form fields and try again.";

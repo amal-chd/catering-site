@@ -22,7 +22,7 @@ export default function HomePage() {
               <Link className="hero-link" href="/services">Explore catering services</Link>
             </div>
           </div>
-          <div className="hero-visual" aria-label="Stylized illustration of a shared meal">
+          <div className="hero-visual" role="img" aria-label="Stylized illustration of a shared meal">
             <div className="plate-art">
               <span className="art-leaf leaf-a" /><span className="art-leaf leaf-b" />
               <span className="art-leaf leaf-c" /><span className="art-leaf leaf-d" />

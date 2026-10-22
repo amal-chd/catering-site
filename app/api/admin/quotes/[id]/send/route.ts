@@ -32,9 +32,12 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
 
   const token = randomBytes(32).toString("hex");
   const tokenHash = createHash("sha256").update(token).digest("hex");
-  const ttlDays = Math.max(1, Math.min(90, Number(process.env.QUOTE_LINK_TTL_DAYS || "30")));
+  const configuredTtlDays = Number(process.env.QUOTE_LINK_TTL_DAYS || "30");
+  const ttlDays = Number.isFinite(configuredTtlDays) ? Math.max(1, Math.min(90, Math.trunc(configuredTtlDays))) : 30;
   const expiry = new Date(Date.now() + ttlDays * 24 * 60 * 60 * 1000).toISOString();
-  const db = createSupabaseServiceClient();
+  let db;
+  try { db = createSupabaseServiceClient(); }
+  catch { return NextResponse.json({ error: "Quotation service is not configured yet." }, { status: 503 }); }
   const { data: updatedQuote, error: updateError } = await db.from("quotes").update({
     status: "sent", public_token_hash: tokenHash, token_expires_at: expiry,
     issued_at: new Date().toISOString(), sent_at: new Date().toISOString(), sent_by: staff.user.id

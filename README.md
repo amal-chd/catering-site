@@ -15,7 +15,7 @@ A mobile-first Next.js website for catering enquiries and staff-created custom q
 
 1. Install Node.js compatible with Next.js 16.
 2. Copy .env.example to .env.local and fill in the Supabase URL, publishable key, and server-only secret key.
-3. Apply supabase/migrations/0001_initial.sql to the Supabase project.
+3. Apply the SQL files in supabase/migrations in filename order.
 4. Create the initial staff account in Supabase Auth, then insert its user UUID and role in public.admin_profiles.
 5. Install dependencies with npm install and start with npm run dev.
 

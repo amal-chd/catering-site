@@ -13,9 +13,12 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
   const raw = await request.json().catch(() => null);
   const parsed = schema.safeParse(raw);
   if (!parsed.success) return NextResponse.json({ error: "Choose a valid status." }, { status: 400 });
+  if (parsed.data.status === "won") return NextResponse.json({ error: "Use the explicit booking confirmation action after a customer accepts a quotation." }, { status: 400 });
 
-  const { data: existing } = await staff.supabase.from("enquiries").select("status").eq("id", id).maybeSingle();
+  const { data: existing, error: existingError } = await staff.supabase.from("enquiries").select("status").eq("id", id).maybeSingle();
+  if (existingError) return NextResponse.json({ error: "Could not check the enquiry status." }, { status: 500 });
   if (!existing) return NextResponse.json({ error: "Enquiry not found." }, { status: 404 });
+  if (existing.status === "won") return NextResponse.json({ error: "A confirmed booking cannot be changed through the enquiry status control." }, { status: 409 });
 
   const { error } = await staff.supabase.from("enquiries")
     .update({ status: parsed.data.status, updated_at: new Date().toISOString() }).eq("id", id);

@@ -19,6 +19,8 @@ function toCents(value: string) {
   return Number(whole) * 100 + Number((fraction + "00").slice(0, 2));
 }
 
+const maxMoneyCents = 999_999_999_999;
+
 export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
   const staff = await getStaffContext();
   if (!staff) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
@@ -40,8 +42,9 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
   const { data: enquiry } = await staff.supabase.from("enquiries").select("id").eq("id", id).maybeSingle();
   if (!enquiry) return NextResponse.json({ error: "Enquiry not found." }, { status: 404 });
 
-  const { data: previous } = await staff.supabase.from("quotes").select("id, revision_number, status")
+  const { data: previous, error: previousError } = await staff.supabase.from("quotes").select("id, revision_number, status")
     .eq("enquiry_id", id).order("revision_number", { ascending: false }).limit(1).maybeSingle();
+  if (previousError) return NextResponse.json({ error: "Could not check existing quotation revisions." }, { status: 500 });
   if (previous?.status === "accepted") {
     return NextResponse.json({ error: "This quotation was accepted. Confirm or follow up on the booking before creating another revision." }, { status: 409 });
   }
@@ -49,7 +52,13 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
   const currency = (process.env.QUOTE_CURRENCY || "INR").toUpperCase();
   if (!/^[A-Z]{3}$/.test(currency)) return NextResponse.json({ error: "Quote currency is not configured." }, { status: 500 });
   const lineCents = parsed.data.items.map((item) => toCents(item.unitPrice) * item.quantity);
+  if (lineCents.some((amount) => !Number.isSafeInteger(amount) || amount > maxMoneyCents)) {
+    return NextResponse.json({ error: "A quotation line exceeds the supported amount. Reduce the quantity or unit price." }, { status: 400 });
+  }
   const subtotalCents = lineCents.reduce((sum, amount) => sum + amount, 0);
+  if (!Number.isSafeInteger(subtotalCents) || subtotalCents > maxMoneyCents) {
+    return NextResponse.json({ error: "The quotation total exceeds the supported amount." }, { status: 400 });
+  }
   const quoteNumber = "Q-" + new Date().getFullYear() + "-" + randomBytes(4).toString("hex").toUpperCase();
 
   const { data: quote, error: quoteError } = await staff.supabase.from("quotes").insert({
@@ -63,7 +72,10 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
     customer_note: parsed.data.customerNote || null,
     supersedes_quote_id: previous?.id || null
   }).select("id, quote_number").single();
-  if (quoteError || !quote) return NextResponse.json({ error: "Could not save the quotation." }, { status: 500 });
+  if (quoteError || !quote) {
+    if (quoteError?.code === "23505") return NextResponse.json({ error: "Another quotation revision was created at the same time. Reload the enquiry and try again." }, { status: 409 });
+    return NextResponse.json({ error: "Could not save the quotation." }, { status: 500 });
+  }
 
   const { error: itemError } = await staff.supabase.from("quote_items").insert(parsed.data.items.map((item, index) => {
     const cents = toCents(item.unitPrice) * item.quantity;
@@ -86,11 +98,12 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
       await staff.supabase.from("quotes").delete().eq("id", quote.id);
       return NextResponse.json({ error: "Quotation service is not configured yet." }, { status: 503 });
     }
-    const { error: supersedeError } = await service.from("quotes")
-      .update({ status: "superseded" }).eq("id", previous.id);
-    if (supersedeError) {
+    const { data: superseded, error: supersedeError } = await service.from("quotes")
+      .update({ status: "superseded" }).eq("id", previous.id).neq("status", "accepted")
+      .select("id").maybeSingle();
+    if (supersedeError || !superseded) {
       await staff.supabase.from("quotes").delete().eq("id", quote.id);
-      return NextResponse.json({ error: "Could not supersede the previous quotation." }, { status: 500 });
+      return NextResponse.json({ error: "The previous quotation changed while this revision was being created. Reload the enquiry and try again." }, { status: 409 });
     }
   }
 

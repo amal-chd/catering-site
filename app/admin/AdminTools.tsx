@@ -123,8 +123,8 @@ export default function AdminTools({ enquiries, bookings, currency }: { enquirie
         ].filter(Boolean).join("\n")}</p>
         <div className="admin-actions">
           <label className="admin-meta" htmlFor={"status-" + item.id}>Status</label>
-          <select id={"status-" + item.id} defaultValue={item.status} disabled={busy === item.id} onChange={(event) => updateStatus(item.id, event.target.value)}>
-            {statuses.map((status) => <option key={status} value={status}>{status.replaceAll("_", " ")}</option>)}
+          <select id={"status-" + item.id} defaultValue={item.status} disabled={busy === item.id || item.status === "won"} onChange={(event) => updateStatus(item.id, event.target.value)}>
+            {statuses.map((status) => <option key={status} value={status} disabled={status === "won"}>{status.replaceAll("_", " ")}{status === "won" ? " (confirm booking below)" : ""}</option>)}
           </select>
           <span className="admin-meta">Received {new Date(item.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Kolkata" })}</span>
         </div>
