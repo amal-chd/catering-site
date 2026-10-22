@@ -81,7 +81,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       strategy="beforeInteractive"
       async
     />
-    <Script id="google-analytics" strategy="afterInteractive">
+    <script id="google-analytics" type="text/plain" data-usercentrics="Google Analytics">
       {`window.dataLayer = window.dataLayer || [];
 window.gtag = function(){window.dataLayer.push(arguments);};
 window.gtag('js', new Date());
@@ -90,6 +90,6 @@ var googleTagScript = document.createElement('script');
 googleTagScript.async = true;
 googleTagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-CG47TTK70T';
 document.head.appendChild(googleTagScript);`}
-    </Script>
+    </script>
   </body></html>;
 }
