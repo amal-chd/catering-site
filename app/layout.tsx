@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import "./globals.css";
 import { siteUrl } from "@/lib/content";
 
@@ -60,5 +61,13 @@ export function SiteFooter() {
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><a className="skip-link" href="#main-content">Skip to content</a><SiteHeader /><main id="main-content">{children}</main><SiteFooter /></body></html>;
+  return <html lang="en"><body><a className="skip-link" href="#main-content">Skip to content</a><SiteHeader /><main id="main-content">{children}</main><SiteFooter />
+    <Script id="google-analytics-setup" strategy="beforeInteractive">
+      {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-CG47TTK70T');`}
+    </Script>
+    <Script src="https://www.googletagmanager.com/gtag/js?id=G-CG47TTK70T" strategy="afterInteractive" />
+  </body></html>;
 }
